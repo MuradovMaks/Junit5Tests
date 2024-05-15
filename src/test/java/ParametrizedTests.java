@@ -1,15 +1,10 @@
 import com.codeborne.selenide.*;
-import org.checkerframework.checker.signature.qual.PrimitiveType;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Tag;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
-import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
-import org.openqa.selenium.By;
 
 import java.util.List;
 import java.util.stream.Stream;
@@ -17,7 +12,7 @@ import java.util.stream.Stream;
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Selenide.*;
 
-public class TestODemoqa
+public class ParametrizedTests
 {
     @BeforeAll
     static void setUp()

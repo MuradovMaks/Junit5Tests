@@ -1,16 +1,18 @@
 import com.codeborne.selenide.*;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.Arguments;
-import org.junit.jupiter.params.provider.MethodSource;
-import org.junit.jupiter.params.provider.ValueSource;
+import org.junit.jupiter.params.provider.*;
 
 import java.util.List;
 import java.util.stream.Stream;
 
 import static com.codeborne.selenide.Condition.text;
+import static com.codeborne.selenide.Condition.visible;
+import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.*;
+import static com.codeborne.selenide.WebDriverConditions.currentFrameUrl;
 
 public class ParametrizedTests
 {
@@ -37,23 +39,20 @@ public class ParametrizedTests
         open("https://demoqa.com/");
         $$(".card-body h5").shouldHave(CollectionCondition.texts(Category));
     }
-    @DisplayName("Проверка авторизации в XYZ Bank")
-    @ValueSource(strings = {
-            "Harry Potter",
-            "Ron Weasly",
-            "Albus Dumbledore",
-            "Neville Longbottom"
-    })
+    @DisplayName("Тестирование зависимости URL от выбранного языка")
+    @CsvFileSource(resources = "/Langs.csv")
     @ParameterizedTest()
-    void checkCustomerLoginTest(String name) {
-        open("https://www.globalsqa.com/angularJs-protractor/BankingProject/#/login");
-        $(".btn-lg").shouldBe(text("Customer Login")).click();
-        $("#userSelect").click();
-        $("#userSelect").selectOption(name);
-        $("[type='submit']").click();
-        $(".fontBig").shouldHave(text(name));
-
+    void languageTest(String language, String link) {
+        open("https://javarush.com/");
+        $(".language-switcher-item").click();
+        $(".language-switcher").$(byText(language)).click();
+        webdriver().shouldHave(currentFrameUrl(link));
     }
+    static Stream<Arguments> sectionsForumTest(){
+        return Stream.of( Arguments.of( List.of(
+                "О JavaRush", "Как пользоваться курсом", "Отзывы", "FAQ", "Контакты", "Оферта") ) );
+    }
+
     @ValueSource(strings = {"Sergey", "Petr", "Alexander, Evgeniy"})
     @DisplayName("Test for field Full Name")
     @ParameterizedTest(name = "Test for field Full Name на примере {0}")
